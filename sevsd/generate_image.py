@@ -1,6 +1,6 @@
 import torch
 
-def generate_image(args, pipeline):
+def generate_image(args, pipeline, **kwargs):
     prompt, negative_prompt, num_inference_steps, num_images, cfg = args
     try:
         with torch.no_grad():
@@ -9,7 +9,8 @@ def generate_image(args, pipeline):
                         negative_prompt=negative_prompt,
                         num_inference_steps=num_inference_steps,
                         num_images_per_prompt=num_images,
-                        guidance_scale=cfg
+                        guidance_scale=cfg,
+                        **kwargs
                     )
             print(f"Available keys in output: {output.keys()}\nNumber of items inside the output is: {len(output['images'])}")
             return output["images"]

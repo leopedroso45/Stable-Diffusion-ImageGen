@@ -19,7 +19,7 @@ class TestSetupPipeline(unittest.TestCase):
 
         mock_setup_device.assert_called_once()
         mock_StableDiffusionPipeline.from_pretrained.assert_called_once_with(
-            config[0], cache_dir=config[1], load_safety_checker=False, requires_safety_checker=False
+            config[0], cache_dir=config[1], use_safetensors=False, load_safety_checker=False, requires_safety_checker=False
         )
 
     @patch('sevsd.setup_pipeline.StableDiffusionPipeline')
