@@ -2,7 +2,7 @@ import unittest
 from unittest.mock import patch, MagicMock
 import sys
 sys.path.append('../')
-from sevsd.process_task import check_cuda_and_clear_cache, process_task
+from sevsd.process_task import check_cuda_and_clear_cache, process_task, check_os_path
 
 class TestProcessTask(unittest.TestCase):
 
@@ -50,6 +50,44 @@ class TestProcessTask(unittest.TestCase):
 
         mock_print.assert_any_call("Exception: Test exception")
         mock_check_cuda_and_clear_cache.assert_called()
+
+    @patch('sevsd.process_task.check_os_path')
+    @patch('sevsd.process_task.generate_image')
+    def test_process_task_with_new_directory(self, mock_generate_image, mock_check_os_path):
+        mock_image = MagicMock()
+        mock_image.save = MagicMock()
+        mock_generate_image.return_value = [mock_image]
+        mock_check_os_path.return_value = "test_path"
+
+        fake_tasks = [("prompt", None, 50, 1, 7.5)]
+        fake_pipeline = MagicMock()
+        fake_path = "test_path"
+
+        process_task(fake_tasks, fake_pipeline, fake_path)
+
+        mock_check_os_path.assert_called_once_with(fake_path)
+        mock_generate_image.assert_called_once_with(fake_tasks[0], fake_pipeline)
+        mock_image.save.assert_called()
+
+    @patch('os.makedirs')
+    @patch('os.path.exists')
+    @patch('sevsd.process_task.generate_image')
+    def test_process_task_existing_directory(self, mock_generate_image, mock_exists, mock_makedirs):
+
+        mock_exists.return_value = True
+        mock_image = MagicMock()
+        mock_image.save = MagicMock()
+        mock_generate_image.return_value = [mock_image]
+
+        fake_tasks = [("prompt", None, 50, 1, 7.5)]
+        fake_pipeline = MagicMock()
+        fake_path = "existing_path"
+
+        process_task(fake_tasks, fake_pipeline, fake_path)
+
+        mock_makedirs.assert_not_called()
+        mock_generate_image.assert_called_once_with(fake_tasks[0], fake_pipeline)
+        mock_image.save.assert_called()
 
 
 class TestCheckCudaAndClearCache(unittest.TestCase):

@@ -2,11 +2,13 @@
 
 from datetime import datetime
 import gc
+import os
 from sevsd.generate_image import generate_image
 import torch
 
 def process_task(tasks, pipeline, path):
     try:
+        path = check_os_path(path)
         if tasks is not None:
             for task in tasks:
                 images = generate_image(task, pipeline)
@@ -28,4 +30,10 @@ def check_cuda_and_clear_cache():
     if torch.cuda.is_available():
         torch.cuda.empty_cache()
     else:
-        gc.collect() 
+        gc.collect()
+
+def check_os_path(path):
+    if not os.path.exists(path):
+        os.makedirs(path)
+        print(f"Created path: {path}")
+    return path
