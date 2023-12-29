@@ -1,77 +1,69 @@
-# Stable Diffusion Image Generation Pipeline
+# Easy Stable Diffusion Image Generation
 
-This repository contains a Python script for generating images using the Stable Diffusion model from Hugging Face's `diffusers` library. The script is designed to work with a list of tasks and configurations, processing each task with the specified model configuration.
+`sevsd` is a Python package designed to simplify the integration of Stable Diffusion image generation into various applications. Utilizing Hugging Face's `diffusers` library, `sevsd` provides a straightforward and flexible interface for generating images based on textual prompts. Whether you're building HTTP APIs, high-level services, or other applications, `sevsd` streamlines the process of incorporating AI-driven image generation.
+
+## Features
+
+- Easy integration of Stable Diffusion model into Python applications.
+- Customizable image generation based on user-defined tasks and configurations.
+- Batch processing capabilities for handling multiple tasks efficiently.
+- Compatibility with CUDA-enabled GPUs for enhanced performance.
 
 ## Requirements
 
-- Python 3.8+
+- Python 3.11+
 - PyTorch
 - Hugging Face `diffusers` library
-- CUDA-compatible GPU (optional but recommended for performance)
+- CUDA-compatible GPU (recommended for better performance)
 
-## Setup
+## Installation
 
-1. Clone the repository.
-2. Install required libraries:
-   ```bash
-   pip install torch diffusers
-   ```
-3. Prepare your configuration and tasks files (see below for format).
+Install `sevsd` directly from the source:
 
-## Configuration
-
-The script expects a configuration file (`pipeline_config/config.py`) with model configurations. Each configuration is a tuple containing the model link or path and cache directory.
-
-Example:
-```python
-# pipeline_config/config.py
-
-config_1 = [
-    ("CompVis/stable-diffusion-v1-4", "./model_cache"),
-    # Add more configurations as needed
-]
-```
-
-## Tasks
-
-Tasks are defined in a separate Python file (`tasks/tasks.py`). Each task is a tuple containing the prompt, negative prompt, number of inference steps, number of images, and CFG scale.
-
-Example:
-```python
-# tasks/tasks.py
-
-tasks = [
-    ("A scenic landscape", None, 50, 1, 7.5),
-    # Add more tasks as needed
-]
-```
+```bash
+git clone https://github.com/leopedroso45/Stable-Diffusion-ImageGen
+cd Stable-Diffusion-ImageGen
+pip install .
+````
 
 ## Usage
 
-Run the script with the following command:
-```bash
-python sd15.py
+Import and use `sevsd` in your Python project:
+
+```python
+from sevsd import do_work
+
+# Define your configuration and tasks
+configs = [("CompVis/stable-diffusion-v1-4", "./model_cache")]
+tasks = [("A scenic landscape", None, 50, 1, 7.5)]
+
+# Process tasks
+do_work(configs, tasks, "./generated-images")
 ```
 
-The script will process each task with each configuration in the `configs` list. Generated images will be saved in the `generated-images` directory with a timestamp.
+This example demonstrates a basic usage scenario. Customize the `configs` and `tasks` as needed for your application.
 
-## Image Generation
+## Components
 
-The `generate_image` function handles the image generation process. It takes a task and a pipeline object, generates the image(s) based on the provided prompt, and returns the images.
+- `setup_pipeline`: Initializes the Stable Diffusion pipeline with given configurations.
+- `process_task`: Processes the list of tasks, generating and saving images.
+- `generate_image`: Handles the image generation process for each task.
+- `setup_device`: Sets up the computation device (GPU or CPU) for image generation.
 
-## Processing Tasks
+## Customization
 
-The `process_task` function iterates over all tasks, generates images, and saves them to disk. If image generation fails (typically due to memory constraints), it prints an error message.
-
-## Main Execution
-
-The `do_work` function iterates over all configurations, sets up the pipeline, and processes the tasks.
+You can customize the image generation process by modifying the `tasks` list with different prompts, inference steps, and other parameters. The `configs` list allows for different model configurations, enabling diverse image styles.
 
 ## Note
 
-- Ensure you have enough GPU memory if running on a CUDA device.
-- The script is designed for batch processing of multiple tasks. Modify the `tasks` and `configs` as per your requirements.
+- Ensure sufficient GPU memory if using CUDA.
+- The package is optimized for batch processing. Modify `tasks` and `configs` to fit your requirements.
+- For detailed examples and advanced usage, refer to the source code documentation.
+
+## Contributing
+
+Contributions to `sevsd` are welcome! Please refer to the repository's issues and pull requests for ongoing development.
 
 ## License
 
-[MIT](LICENSE)
+`sevsd` is licensed under the [MIT License](LICENSE).
