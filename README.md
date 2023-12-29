@@ -1,5 +1,9 @@
 # Easy Stable Diffusion Image Generation
 
+![Build Status](https://github.com/leopedroso45/Stable-Diffusion-ImageGen/actions/workflows/python-package.yml/badge.svg)
+[![codecov](https://codecov.io/gh/leopedroso45/Stable-Diffusion-ImageGen/branch/main/graph/badge.svg?token=YOUR_TOKEN)](https://codecov.io/gh/leopedroso45/Stable-Diffusion-ImageGen)
+![License](https://img.shields.io/github/license/leopedroso45/Stable-Diffusion-ImageGen)
+
 `sevsd` is a Python package designed to simplify the integration of Stable Diffusion image generation into various applications. Utilizing Hugging Face's `diffusers` library, `sevsd` provides a straightforward and flexible interface for generating images based on textual prompts. Whether you're building HTTP APIs, high-level services, or other applications, `sevsd` streamlines the process of incorporating AI-driven image generation.
 
 ## Features
