@@ -4,8 +4,8 @@ def check_and_clear_cache():
     if torch.cuda.is_available():
         torch.cuda.empty_cache()
         
-def generate_image(args, pipeline, parallel_exec=True, **kwargs):
-    prompt, negative_prompt, num_inference_steps, num_images, cfg = args
+def generate_image(task, pipeline, parallel_exec=True, **kwargs):
+    prompt, negative_prompt, num_inference_steps, num_images, cfg = task["details"]
     
     def execute_pipeline(num_images):
         check_and_clear_cache()
