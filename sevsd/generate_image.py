@@ -1,19 +1,26 @@
 import torch
 
-def generate_image(args, pipeline, **kwargs):
+def generate_image(args, pipeline, parallel_exec, **kwargs):
     prompt, negative_prompt, num_inference_steps, num_images, cfg = args
+    
+    def execute_pipeline(num_images):
+        return pipeline(
+            prompt=prompt,
+            negative_prompt=negative_prompt,
+            num_inference_steps=num_inference_steps,
+            num_images_per_prompt=num_images,
+            guidance_scale=cfg,
+            **kwargs
+        )
+    
     try:
         with torch.no_grad():
-            output = pipeline(
-                        prompt=prompt,
-                        negative_prompt=negative_prompt,
-                        num_inference_steps=num_inference_steps,
-                        num_images_per_prompt=num_images,
-                        guidance_scale=cfg,
-                        **kwargs
-                    )
-            print(f"Available keys in output: {output.keys()}\nNumber of items inside the output is: {len(output['images'])}")
-            return output["images"]
+            if parallel_exec:
+                output = execute_pipeline(num_images)
+                return output["images"]
+            else:
+                output_list = [execute_pipeline(1)["images"][0] for _ in range(num_images)]
+                return output_list
     except RuntimeError as e:
         print(f"Runtime error: {e}")
         return None

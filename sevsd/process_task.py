@@ -6,12 +6,12 @@ import os
 from sevsd.generate_image import generate_image
 import torch
 
-def process_task(tasks, pipeline, path):
+def process_task(tasks, pipeline, path, parallel_exec):
     try:
         path = check_os_path(path)
         if tasks is not None:
             for task in tasks:
-                images = generate_image(task, pipeline)
+                images = generate_image(task, pipeline, parallel_exec)
                 if images is not None:
                     for image in images:
                         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S%f")
