@@ -4,6 +4,8 @@ def generate_image(args, pipeline, parallel_exec=True, **kwargs):
     prompt, negative_prompt, num_inference_steps, num_images, cfg = args
     
     def execute_pipeline(num_images):
+        if torch.cuda.is_available():
+            torch.cuda.empty_cache()
         return pipeline(
             prompt=prompt,
             negative_prompt=negative_prompt,
