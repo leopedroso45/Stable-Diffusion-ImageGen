@@ -1,11 +1,14 @@
 import torch
 
+def check_and_clear_cache():
+    if torch.cuda.is_available():
+        torch.cuda.empty_cache()
+        
 def generate_image(args, pipeline, parallel_exec=True, **kwargs):
     prompt, negative_prompt, num_inference_steps, num_images, cfg = args
     
     def execute_pipeline(num_images):
-        if torch.cuda.is_available():
-            torch.cuda.empty_cache()
+        check_and_clear_cache()
         return pipeline(
             prompt=prompt,
             negative_prompt=negative_prompt,
@@ -27,5 +30,4 @@ def generate_image(args, pipeline, parallel_exec=True, **kwargs):
         print(f"Runtime error: {e}")
         return None
     finally:
-        if torch.cuda.is_available():
-            torch.cuda.empty_cache()
+        check_and_clear_cache()
