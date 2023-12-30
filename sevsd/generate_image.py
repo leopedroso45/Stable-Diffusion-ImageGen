@@ -1,6 +1,6 @@
 import torch
 
-def generate_image(args, pipeline, parallel_exec, **kwargs):
+def generate_image(args, pipeline, parallel_exec=True, **kwargs):
     prompt, negative_prompt, num_inference_steps, num_images, cfg = args
     
     def execute_pipeline(num_images):

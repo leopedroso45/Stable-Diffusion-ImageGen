@@ -17,6 +17,20 @@ class TestGenerateImage(unittest.TestCase):
 
         self.assertEqual(len(images), len(mock_output['images']))
         mock_torch.cuda.empty_cache.assert_called()
+    
+    @patch('sevsd.generate_image.torch')
+    def test_generate_image_sequential_execution(self, mock_torch):
+        fake_args = ("prompt", None, 50, 10, 7.5)  # num_images = 10 para testar a execução sequencial
+        fake_pipeline = MagicMock()
+        fake_image = MagicMock()
+        mock_output = {'images': [fake_image]}
+        fake_pipeline.return_value = mock_output
+
+        images = generate_image(fake_args, fake_pipeline, parallel_exec=False)
+
+        self.assertEqual(len(images), 10)
+        self.assertEqual(images[0], fake_image)
+        mock_torch.cuda.empty_cache.assert_called()
 
     @patch('sevsd.generate_image.torch')
     def test_generate_image_runtime_error(self, mock_torch):

@@ -63,7 +63,7 @@ class TestProcessTask(unittest.TestCase):
         fake_pipeline = MagicMock()
         fake_path = "test_path"
 
-        process_task(fake_tasks, fake_pipeline, fake_path, parallel_exec=True)
+        process_task(fake_tasks, fake_pipeline, fake_path, True)
 
         mock_check_os_path.assert_called_once_with(fake_path)
         mock_generate_image.assert_called_once_with(fake_tasks[0], fake_pipeline, True)
@@ -83,9 +83,30 @@ class TestProcessTask(unittest.TestCase):
         fake_pipeline = MagicMock()
         fake_path = "existing_path"
 
-        process_task(fake_tasks, fake_pipeline, fake_path, parallel_exec=True)
+        process_task(fake_tasks, fake_pipeline, fake_path, True)
 
         mock_makedirs.assert_not_called()
+        mock_generate_image.assert_called_once_with(fake_tasks[0], fake_pipeline, True)
+        mock_image.save.assert_called()
+
+    @patch('os.makedirs')
+    @patch('os.path.exists')
+    @patch('sevsd.process_task.generate_image')
+    def test_process_task_no_directory(self, mock_generate_image, mock_exists, mock_makedirs):
+
+        mock_exists.return_value = False
+        mock_makedirs.return_value = True
+        mock_image = MagicMock()
+        mock_image.save = MagicMock()
+        mock_generate_image.return_value = [mock_image]
+
+        fake_tasks = [("prompt", None, 50, 1, 7.5)]
+        fake_pipeline = MagicMock()
+        fake_path = "existing_path"
+
+        process_task(fake_tasks, fake_pipeline, fake_path, parallel_exec=True)
+
+        mock_makedirs.assert_called_once()
         mock_generate_image.assert_called_once_with(fake_tasks[0], fake_pipeline, True)
         mock_image.save.assert_called()
 

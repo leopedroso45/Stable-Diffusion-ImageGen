@@ -6,7 +6,7 @@ import os
 from sevsd.generate_image import generate_image
 import torch
 
-def process_task(tasks, pipeline, path, parallel_exec):
+def process_task(tasks, pipeline, path, parallel_exec=True):
     try:
         path = check_os_path(path)
         if tasks is not None:
