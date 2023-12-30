@@ -13,7 +13,7 @@ class TestGenerateImage(unittest.TestCase):
         mock_output = {'images': [MagicMock()]}
         fake_pipeline.return_value = mock_output
 
-        images = generate_image(fake_args, fake_pipeline)
+        images = generate_image(fake_args, fake_pipeline, parallel_exec=True)
 
         self.assertEqual(len(images), len(mock_output['images']))
         mock_torch.cuda.empty_cache.assert_called()
@@ -25,7 +25,7 @@ class TestGenerateImage(unittest.TestCase):
 
         fake_pipeline.side_effect = RuntimeError("Test error")
 
-        images = generate_image(fake_args, fake_pipeline)
+        images = generate_image(fake_args, fake_pipeline, parallel_exec=False)
 
         self.assertIsNone(images)
         mock_torch.cuda.empty_cache.assert_called()

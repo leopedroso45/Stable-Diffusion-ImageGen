@@ -20,7 +20,7 @@ class TestDoWork(unittest.TestCase):
         do_work(fake_configs, fake_tasks, fake_path)
 
         mock_setup_pipeline.assert_called_once_with(fake_configs[0])
-        mock_process_task.assert_called_once_with(fake_tasks, mock_pipeline, fake_path)
+        mock_process_task.assert_called_once_with(fake_tasks, mock_pipeline, fake_path, True)
 
 if __name__ == '__main__':
     unittest.main()

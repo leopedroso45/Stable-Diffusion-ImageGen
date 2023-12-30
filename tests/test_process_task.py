@@ -17,9 +17,9 @@ class TestProcessTask(unittest.TestCase):
         fake_pipeline = MagicMock()
         fake_path = "test_path"
 
-        process_task(fake_tasks, fake_pipeline, fake_path)
+        process_task(fake_tasks, fake_pipeline, fake_path, parallel_exec=True)
 
-        mock_generate_image.assert_called_once_with(fake_tasks[0], fake_pipeline)
+        mock_generate_image.assert_called_once_with(fake_tasks[0], fake_pipeline, True)
         mock_image.save.assert_called()
 
 
@@ -32,9 +32,9 @@ class TestProcessTask(unittest.TestCase):
         fake_pipeline = MagicMock()
         fake_path = "test_path"
 
-        process_task(fake_tasks, fake_pipeline, fake_path)
+        process_task(fake_tasks, fake_pipeline, fake_path, parallel_exec=True)
 
-        mock_generate_image.assert_called_once_with(fake_tasks[0], fake_pipeline)
+        mock_generate_image.assert_called_once_with(fake_tasks[0], fake_pipeline, True)
 
     @patch('sevsd.process_task.generate_image')
     @patch('sevsd.process_task.check_cuda_and_clear_cache')
@@ -46,7 +46,7 @@ class TestProcessTask(unittest.TestCase):
         fake_pipeline = MagicMock()
         fake_path = "test_path"
 
-        process_task(fake_tasks, fake_pipeline, fake_path)
+        process_task(fake_tasks, fake_pipeline, fake_path, parallel_exec=True)
 
         mock_print.assert_any_call("Exception: Test exception")
         mock_check_cuda_and_clear_cache.assert_called()
@@ -63,10 +63,10 @@ class TestProcessTask(unittest.TestCase):
         fake_pipeline = MagicMock()
         fake_path = "test_path"
 
-        process_task(fake_tasks, fake_pipeline, fake_path)
+        process_task(fake_tasks, fake_pipeline, fake_path, parallel_exec=True)
 
         mock_check_os_path.assert_called_once_with(fake_path)
-        mock_generate_image.assert_called_once_with(fake_tasks[0], fake_pipeline)
+        mock_generate_image.assert_called_once_with(fake_tasks[0], fake_pipeline, True)
         mock_image.save.assert_called()
 
     @patch('os.makedirs')
@@ -83,10 +83,10 @@ class TestProcessTask(unittest.TestCase):
         fake_pipeline = MagicMock()
         fake_path = "existing_path"
 
-        process_task(fake_tasks, fake_pipeline, fake_path)
+        process_task(fake_tasks, fake_pipeline, fake_path, parallel_exec=True)
 
         mock_makedirs.assert_not_called()
-        mock_generate_image.assert_called_once_with(fake_tasks[0], fake_pipeline)
+        mock_generate_image.assert_called_once_with(fake_tasks[0], fake_pipeline, True)
         mock_image.save.assert_called()
 
 
