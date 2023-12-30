@@ -19,6 +19,7 @@ setup(
     install_requires=[
         "torch",
         "diffusers",
+        "omegaconf",
     ],
     include_package_data=True,
     keywords='image generation, stable diffusion, AI',
