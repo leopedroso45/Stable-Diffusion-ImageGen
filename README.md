@@ -12,7 +12,7 @@
 - Easy integration of Stable Diffusion model into Python applications.
 - Customizable image generation based on user-defined tasks and configurations.
 - Batch processing capabilities for handling multiple tasks efficiently.
-- Compatibility with CUDA-enabled GPUs for enhanced performance.
+- Compatibility with CUDA-enabled GPUs and MPS (Apple's Metal Performance Shaders) for enhanced performance.
 
 ## Requirements
 
