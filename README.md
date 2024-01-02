@@ -23,13 +23,25 @@
 
 ## Installation
 
-Install `sevsd` directly from the source:
+### Install from PyPI
+
+You can install `sevsd` directly from PyPI. This is the recommended way to install the package as it will always provide you with the latest stable version:
+
+```bash
+pip install sevsd
+```
+
+### Install from Source
+
+If you prefer to install `sevsd` from the source, for example, to get the latest changes that may not be released on PyPI yet, you can clone the repository and install it manually:
 
 ```bash
 git clone https://github.com/leopedroso45/Stable-Diffusion-ImageGen
 cd Stable-Diffusion-ImageGen
 pip install .
-````
+```
+
+Note: When installing from source, make sure you have the necessary build tools and dependencies installed on your system.
 
 ## Usage
 
