@@ -4,10 +4,11 @@
 [![codecov](https://codecov.io/gh/leopedroso45/Stable-Diffusion-ImageGen/branch/main/graph/badge.svg?token=YOUR_TOKEN)](https://codecov.io/gh/leopedroso45/Stable-Diffusion-ImageGen)
 ![License](https://img.shields.io/github/license/leopedroso45/Stable-Diffusion-ImageGen)
 
-`sevsd` is a Python package designed to simplify the integration of Stable Diffusion image generation into various applications. Utilizing Hugging Face's `diffusers` library, `sevsd` provides a straightforward and flexible interface for generating images based on textual prompts. Whether you're building HTTP APIs, high-level services, or other applications, `sevsd` streamlines the process of incorporating AI-driven image generation.
+`sevsd` is a Python package specifically designed to make the process of generating images using Stable Diffusion models as simple as possible. The package enables image generation with just a single function call, greatly simplifying the integration of Stable Diffusion into various applications. Utilizing Hugging Face's `diffusers` library, `sevsd` provides an intuitive and flexible interface for generating images based on textual prompts. This makes it an ideal choice for building HTTP APIs, high-level services, or any application requiring AI-driven image generation.
 
 ## Features
 
+- Simplified interface for Stable Diffusion image generation, enabling the creation of images with just a single function call.
 - Easy integration of Stable Diffusion model into Python applications.
 - Customizable image generation based on user-defined tasks and configurations.
 - Batch processing capabilities for handling multiple tasks efficiently.
@@ -37,31 +38,64 @@ Import and use `sevsd` in your Python project:
 ```python
 from sevsd import do_work
 
-# Define your configuration and tasks
-configs = [("CompVis/stable-diffusion-v1-4", "./model_cache")]
-tasks = [("A scenic landscape", None, 50, 1, 7.5)]
+# Define your models and jobs
+models = [
+    {
+        "name": './model_cache/model1.safetensors',
+        "executor": {
+            "labels": [1],
+            "num_of_exec": 1,
+            "cfg_scale": 7,
+            "inference_steps": 100,
+        }
+    },
+    {
+        "name": './model_cache/model2.safetensors',
+        "executor": {
+            "labels": [2],
+            "num_of_exec": 2,
+            "cfg_scale": 6,
+            "inference_steps": 50,
+        }
+    },
+]
 
-# Process tasks
-do_work(configs, tasks, "./generated-images")
+jobs = [
+    {
+        "label": 1,
+        "prompt": 'A scenic landscape',
+        "negative_prompt": "blurred image, black and white, watermarked image",
+    },
+    {
+        "label": 2,
+        "prompt": 'A person wearing a mask',
+        "negative_prompt": 'deformed anatomy, hand-drawn image, blurred image',
+    },
+]
+
+do_work(models, jobs, './generated-images')
 ```
 
-This example demonstrates a basic usage scenario. Customize the `configs` and `tasks` as needed for your application.
+This example demonstrates a basic usage scenario. Customize the `models` and `jobs` as needed for your application.
 
 ## Components
 
-- `setup_pipeline`: Initializes the Stable Diffusion pipeline with given configurations.
-- `process_task`: Processes the list of tasks, generating and saving images.
-- `generate_image`: Handles the image generation process for each task.
+- `setup_pipeline`: Prepares the Stable Diffusion pipeline with the specified model configuration.
+- `process_task`: Processes individual tasks, generating and saving images based on job specifications.
+- `generate_image`: Handles the image generation process for each job.
 - `setup_device`: Sets up the computation device (GPU or CPU) for image generation.
+- `check_os_path`: Ensures the output path exists or creates it.
+- `check_cuda_and_clear_cache`: Manages GPU memory and cache for efficient processing.
+- `do_work`: Central function to orchestrate the processing of jobs with corresponding models.
 
 ## Customization
 
-You can customize the image generation process by modifying the `tasks` list with different prompts, inference steps, and other parameters. The `configs` list allows for different model configurations, enabling diverse image styles.
+You can customize the image generation process by adjusting the `models` and `jobs` lists. Define different prompts, model paths, execution parameters, and more to cater to diverse image styles and requirements.
 
 ## Note
 
 - Ensure sufficient GPU memory if using CUDA.
-- The package is optimized for batch processing. Modify `tasks` and `configs` to fit your requirements.
+- The package is optimized for flexible handling of various job and model configurations.
 - For detailed examples and advanced usage, refer to the source code documentation.
 
 ## Contributing

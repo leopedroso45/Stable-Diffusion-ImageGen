@@ -13,13 +13,13 @@ class TestSetupPipeline(unittest.TestCase):
         mock_setup_device.return_value = mock_device
         mock_pipeline = MagicMock()
         mock_StableDiffusionPipeline.from_pretrained.return_value = mock_pipeline
-        config = ('model_path', 'cache_path')
+        config = 'model_path'
 
         pipeline = setup_pipeline(config)
 
         mock_setup_device.assert_called_once()
         mock_StableDiffusionPipeline.from_pretrained.assert_called_once_with(
-            config[0], cache_dir=config[1], use_safetensors=False, load_safety_checker=False, requires_safety_checker=False
+            config, use_safetensors=False, load_safety_checker=False, requires_safety_checker=False
         )
 
     @patch('sevsd.setup_pipeline.StableDiffusionPipeline')
@@ -29,13 +29,13 @@ class TestSetupPipeline(unittest.TestCase):
         mock_setup_device.return_value = mock_device
         mock_pipeline = MagicMock()
         mock_StableDiffusionPipeline.from_single_file.return_value = mock_pipeline
-        config = ('model_file.safetensors', 'cache_path')
+        config = 'model_file.safetensors'
 
         pipeline = setup_pipeline(config)
 
         mock_setup_device.assert_called_once()
         mock_StableDiffusionPipeline.from_single_file.assert_called_once_with(
-            config[0], cache_dir=config[1], use_safetensors=True, load_safety_checker=False, requires_safety_checker=False
+            config, use_safetensors=True, load_safety_checker=False, requires_safety_checker=False
         )
 
 if __name__ == '__main__':

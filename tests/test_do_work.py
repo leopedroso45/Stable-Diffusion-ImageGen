@@ -12,20 +12,26 @@ class TestDoWork(unittest.TestCase):
         mock_pipeline = MagicMock()
         mock_setup_pipeline.return_value = mock_pipeline
 
-        fake_configs = [
-            {"model_info": ("model_path", "cache_path"), "task_ids": [1, 2]}
+        fake_models = [
+            {
+                "name": "model_path",
+                "executor": {
+                    "labels": [1, 2],
+                    "num_of_exec": 2,
+                    "cfg_scale": 7
+                }
+            }
         ]
-        fake_tasks = [
-            {"task_id": 1, "details": ("prompt1", None, 50, 1, 7.5)},
-            {"task_id": 2, "details": ("prompt2", None, 30, 2, 8.0)}
+        fake_jobs = [
+            {"label": 1, "details": ("prompt1", None, 50, 1, 7.5)},
+            {"label": 2, "details": ("prompt2", None, 30, 2, 8.0)}
         ]
         fake_path = "test_path"
 
-        do_work(fake_configs, fake_tasks, fake_path)
+        do_work(fake_models, fake_jobs, fake_path)
 
-        mock_setup_pipeline.assert_called_once_with(('model_path', 'cache_path'))
-        mock_process_task.assert_any_call(("prompt1", None, 50, 1, 7.5), mock_pipeline, fake_path, True)
-        mock_process_task.assert_any_call(("prompt2", None, 30, 2, 8.0), mock_pipeline, fake_path, True)
+        mock_process_task.assert_any_call(fake_jobs[0], mock_pipeline, fake_models[0]['executor'], fake_path, True)
+        mock_process_task.assert_any_call(fake_jobs[1], mock_pipeline, fake_models[0]['executor'], fake_path, True)
 
 if __name__ == '__main__':
     unittest.main()
