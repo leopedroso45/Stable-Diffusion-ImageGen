@@ -29,7 +29,6 @@ def setup_pipeline(pretrained_model_link_or_path, **kwargs):
     default_kwargs = {
         "use_safetensors": False,
         "safety_checker": None,
-        "feature_extractor": AutoFeatureExtractor.from_pretrained(pretrained_model_link_or_path),
     }
 
     if pretrained_model_link_or_path.endswith(".safetensors"):
@@ -41,6 +40,7 @@ def setup_pipeline(pretrained_model_link_or_path, **kwargs):
             **default_kwargs
         )
     else:
+        default_kwargs["feature_extractor"] = AutoFeatureExtractor.from_pretrained(pretrained_model_link_or_path)
         default_kwargs.update(kwargs)
         pipeline = StableDiffusionPipeline.from_pretrained(
             pretrained_model_link_or_path,

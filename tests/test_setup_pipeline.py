@@ -34,17 +34,14 @@ class TestSetupPipeline(unittest.TestCase):
         mock_setup_device.return_value = mock_device
         mock_pipeline = MagicMock()
         mock_from_single_file.return_value = mock_pipeline
-        mock_feature_extractor_instance = MagicMock()
-        mock_feature_extractor.return_value = mock_feature_extractor_instance
         config = 'model_file.safetensors'
 
         pipeline = setup_pipeline(config)
 
         mock_setup_device.assert_called_once()
         mock_from_single_file.assert_called_once_with(
-            config, use_safetensors=True, safety_checker=None, feature_extractor=mock_feature_extractor_instance
+            config, use_safetensors=True, safety_checker=None
         )
-        mock_feature_extractor.assert_called_once_with(config)
 
 if __name__ == '__main__':
     unittest.main()
