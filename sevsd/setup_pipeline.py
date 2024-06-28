@@ -10,13 +10,14 @@ def setup_pipeline(pretrained_model_link_or_path, loras, **kwargs):
 
     Parameters:
         pretrained_model_link_or_path (str): A link to a pretrained model or a file path to a local model file.
+        loras (list): A list of LoRA weights files to be applied to the pipeline.
         **kwargs: Additional keyword arguments for pipeline configuration.
 
     Returns:
         StableDiffusionPipeline: The initialized Stable Diffusion pipeline ready for image generation.
 
     Example:
-        pipeline = setup_pipeline("CompVis/stable-diffusion-v1-4")
+        pipeline = setup_pipeline("CompVis/stable-diffusion-v1-4", ["lora1.safetensors", "lora2.safetensors"])
 
     Note:
         - The function supports both remote model links and local `.safetensors` files.
