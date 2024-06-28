@@ -17,6 +17,7 @@ def do_work(models, jobs, image_path, parallel_exec=True, loras=None, **kwargs):
                               - 'negative_prompt' (str, optional): Text prompt for undesired image features.
         image_path (str): Directory path to save the generated images.
         parallel_exec (bool, optional): Flag to enable parallel execution. Defaults to True.
+        loras (list, optional): List of LoRA weights files to be applied to the pipeline. Defaults to None.
         **kwargs: Additional keyword arguments for pipeline setup.
 
     Example:
