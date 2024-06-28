@@ -1,7 +1,7 @@
 from sevsd.setup_pipeline import setup_pipeline
 from sevsd.process_task import process_task
 
-def do_work(models, jobs, image_path, parallel_exec=True, **kwargs):
+def do_work(models, jobs, image_path, parallel_exec=True, loras=None, **kwargs):
     r"""
     Orchestrates the processing of image generation tasks based on given models and jobs.
 
@@ -56,12 +56,15 @@ def do_work(models, jobs, image_path, parallel_exec=True, **kwargs):
 
         do_work(models, jobs, "./generated-images")
     """
+    if loras is None:
+        loras = []
+
     job_dict = {job['label']: [] for job in jobs}
     for job in jobs:
         job_dict[job['label']].append(job)
 
     for model in models:
-        pipeline = setup_pipeline(model["name"], **kwargs)
+        pipeline = setup_pipeline(model["name"], loras, **kwargs)
         labels = model.get("executor", {}).get("labels", [])
         for label in labels:
             if label in job_dict:

@@ -1,8 +1,8 @@
 from sevsd.setup_device import setup_device
-from diffusers import StableDiffusionPipeline
+from diffusers import StableDiffusionPipeline, EulerAncestralDiscreteScheduler
 from transformers import AutoFeatureExtractor
 
-def setup_pipeline(pretrained_model_link_or_path, **kwargs):
+def setup_pipeline(pretrained_model_link_or_path, loras, **kwargs):
     r"""
     Sets up and returns a Stable Diffusion pipeline for image generation.
 
@@ -46,6 +46,13 @@ def setup_pipeline(pretrained_model_link_or_path, **kwargs):
             pretrained_model_link_or_path,
             **default_kwargs
         )
+    
+    if loras:
+        pipeline.scheduler = EulerAncestralDiscreteScheduler.from_config(pipeline.scheduler.config)
+        for lora in loras:
+            if lora.endswith(".safetensors"):
+                pipeline.load_lora_weights(lora)
+                pipeline.fuse_lora()
 
     pipeline.to(device)
     pipeline.enable_attention_slicing()

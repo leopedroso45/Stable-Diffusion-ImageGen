@@ -17,8 +17,9 @@ class TestSetupPipeline(unittest.TestCase):
         mock_feature_extractor_instance = MagicMock()
         mock_feature_extractor.return_value = mock_feature_extractor_instance
         config = 'model_path'
+        loras = []
 
-        pipeline = setup_pipeline(config)
+        pipeline = setup_pipeline(config, loras)
 
         mock_setup_device.assert_called_once()
         mock_from_pretrained.assert_called_once_with(
@@ -35,8 +36,9 @@ class TestSetupPipeline(unittest.TestCase):
         mock_pipeline = MagicMock()
         mock_from_single_file.return_value = mock_pipeline
         config = 'model_file.safetensors'
+        loras = []
 
-        pipeline = setup_pipeline(config)
+        pipeline = setup_pipeline(config, loras)
 
         mock_setup_device.assert_called_once()
         mock_from_single_file.assert_called_once_with(
