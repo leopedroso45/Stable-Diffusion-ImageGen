@@ -1,6 +1,5 @@
 from sevsd.setup_device import setup_device
 from diffusers import StableDiffusionPipeline
-from diffusers.pipelines.stable_diffusion.safety_checker import StableDiffusionSafetyChecker
 from transformers import AutoFeatureExtractor
 
 def setup_pipeline(pretrained_model_link_or_path, **kwargs):
