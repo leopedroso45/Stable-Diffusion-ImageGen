@@ -21,6 +21,8 @@ setup(
         "diffusers",
         "transformers",
         "omegaconf",
+        "peft>=0.11.0",
+        "setuptools"
     ],
     include_package_data=True,
     keywords='image generation, stable diffusion, AI',

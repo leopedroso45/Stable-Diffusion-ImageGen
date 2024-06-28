@@ -2,3 +2,5 @@ torch
 diffusers
 omegaconf
 transformers
+peft
+setuptools
