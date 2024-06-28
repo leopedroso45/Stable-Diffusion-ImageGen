@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="sevsd",
-    version="0.1.0",
+    version="0.2.0",
     author="Leonardo Severo",
     author_email="leopedroso45@gmail.com",
     description="A Python package to make Stable Diffusion Image Generation ridiculously easy",
@@ -19,6 +19,7 @@ setup(
     install_requires=[
         "torch",
         "diffusers",
+        "transformers",
         "omegaconf",
     ],
     include_package_data=True,
