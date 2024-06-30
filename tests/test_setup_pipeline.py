@@ -61,7 +61,7 @@ class TestSetupPipeline(unittest.TestCase):
         mock_feature_extractor_instance = MagicMock()
         mock_feature_extractor.return_value = mock_feature_extractor_instance
         config = 'model_path'
-        loras = ['lora1.safetensors', 'lora2.safetensors']
+        loras = ['./loras/lora1.safetensors', './loras/lora2.safetensors']
 
         pipeline = setup_pipeline(config, loras)
 
@@ -74,8 +74,8 @@ class TestSetupPipeline(unittest.TestCase):
 
         # Check if LoRA weights were loaded and fused correctly
         self.assertEqual(mock_pipeline.load_lora_weights.call_count, 2)
-        mock_pipeline.load_lora_weights.assert_any_call('lora1.safetensors', weight_name='lora1.safetensors', adapter_name='lora1safetensors')
-        mock_pipeline.load_lora_weights.assert_any_call('lora2.safetensors', weight_name='lora2.safetensors', adapter_name='lora2safetensors')
+        mock_pipeline.load_lora_weights.assert_any_call('./loras/lora1.safetensors', weight_name='./loras/lora1.safetensors', adapter_name='lora1safetensors')
+        mock_pipeline.load_lora_weights.assert_any_call('./loras/lora2.safetensors', weight_name='./loras/lora2.safetensors', adapter_name='lora2safetensors')
         mock_pipeline.set_adapters.assert_called_once_with(['lora1safetensors', 'lora2safetensors'], [1.0, 1.0])
         mock_pipeline.fuse_lora.assert_called_once()
 

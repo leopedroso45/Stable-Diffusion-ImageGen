@@ -1,6 +1,7 @@
 from sevsd.setup_device import setup_device
 from diffusers import StableDiffusionPipeline, EulerAncestralDiscreteScheduler
 from transformers import AutoFeatureExtractor
+import os
 
 def setup_pipeline(pretrained_model_link_or_path, loras, **kwargs):
     r"""
@@ -17,7 +18,7 @@ def setup_pipeline(pretrained_model_link_or_path, loras, **kwargs):
         StableDiffusionPipeline: The initialized Stable Diffusion pipeline ready for image generation.
 
     Example:
-        pipeline = setup_pipeline("CompVis/stable-diffusion-v1-4", ["lora1.safetensors", "lora2.safetensors"])
+        pipeline = setup_pipeline("CompVis/stable-diffusion-v1-4", ["./loras/lora1.safetensors", "./loras/lora2.safetensors"])
 
     Note:
         - The function supports both remote model links and local `.safetensors` files.
@@ -55,7 +56,7 @@ def setup_pipeline(pretrained_model_link_or_path, loras, **kwargs):
         set_loras = []
         set_weights = []
         for lora in loras:
-            adapter_name = lora.replace(".", "")
+            adapter_name = os.path.basename(lora).replace(".", "")
             pipeline.load_lora_weights(
                 lora,
                 weight_name=lora,
