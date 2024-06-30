@@ -4,3 +4,4 @@ from sevsd.process_task import process_task, check_cuda_and_clear_cache, check_o
 from sevsd.setup_device import setup_device
 from sevsd.setup_pipeline import setup_pipeline
 from sevsd.do_work import do_work
+from sevsd.load_embeddings import load_embeddings_from_folder

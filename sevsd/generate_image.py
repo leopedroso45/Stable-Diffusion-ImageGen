@@ -1,5 +1,5 @@
 import torch
-        
+
 def generate_image(job, pipeline, executor, parallel_exec=True, **kwargs):
     r"""
     Generates images based on textual prompts using the provided Stable Diffusion pipeline.
@@ -44,6 +44,8 @@ def generate_image(job, pipeline, executor, parallel_exec=True, **kwargs):
             num_inference_steps=num_inference_steps,
             num_images_per_prompt=num_images,
             guidance_scale=cfg,
+            positive_embeddings=getattr(pipeline, 'positive_embeddings', None),
+            negative_embeddings=getattr(pipeline, 'negative_embeddings', None),
             **kwargs
         )
     try:

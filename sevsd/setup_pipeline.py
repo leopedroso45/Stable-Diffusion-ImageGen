@@ -3,7 +3,7 @@ from diffusers import StableDiffusionPipeline, EulerAncestralDiscreteScheduler
 from transformers import AutoFeatureExtractor
 import os
 
-def setup_pipeline(pretrained_model_link_or_path, loras, **kwargs):
+def setup_pipeline(pretrained_model_link_or_path, loras, positive_embeddings=None, negative_embeddings=None, **kwargs):
     r"""
     Sets up and returns a Stable Diffusion pipeline for image generation.
 
@@ -12,6 +12,8 @@ def setup_pipeline(pretrained_model_link_or_path, loras, **kwargs):
     Parameters:
         pretrained_model_link_or_path (str): A link to a pretrained model or a file path to a local model file.
         loras (list): A list of LoRA weights files to be applied to the pipeline.
+        positive_embeddings (list, optional): A list of positive embeddings to be applied to the pipeline. Defaults to None.
+        negative_embeddings (list, optional): A list of negative embeddings to be applied to the pipeline. Defaults to None.
         **kwargs: Additional keyword arguments for pipeline configuration.
 
     Returns:
@@ -49,8 +51,9 @@ def setup_pipeline(pretrained_model_link_or_path, loras, **kwargs):
             **default_kwargs
         )
     
+    pipeline.scheduler = EulerAncestralDiscreteScheduler.from_config(pipeline.scheduler.config)
+
     if loras:
-        pipeline.scheduler = EulerAncestralDiscreteScheduler.from_config(pipeline.scheduler.config)
         pipeline.unfuse_lora()
         
         set_loras = []
@@ -67,6 +70,9 @@ def setup_pipeline(pretrained_model_link_or_path, loras, **kwargs):
 
         pipeline.set_adapters(set_loras, set_weights)
         pipeline.fuse_lora()
+
+    pipeline.positive_embeddings = positive_embeddings
+    pipeline.negative_embeddings = negative_embeddings
 
     pipeline.to(device)
     pipeline.enable_attention_slicing()

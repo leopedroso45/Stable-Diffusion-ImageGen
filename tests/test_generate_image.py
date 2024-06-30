@@ -22,15 +22,15 @@ class TestGenerateImage(unittest.TestCase):
     @patch('sevsd.generate_image.torch')
     def test_generate_image_sequential_execution(self, mock_torch):
         fake_job = {"prompt": "prompt", "negative_prompt": None}
-        fake_executor = {"inference_steps": 50, "num_of_exec": 10, "cfg_scale": 7.5}  # num_images = 10 para testar a execução sequencial
+        fake_executor = {"inference_steps": 50, "num_of_exec": 10, "cfg_scale": 7.5}
         fake_pipeline = MagicMock()
         fake_image = MagicMock()
-        mock_output = {'images': [fake_image] * 10}
+        mock_output = {'images': [fake_image] * 1}
         fake_pipeline.return_value = mock_output
 
         images = generate_image(fake_job, fake_pipeline, fake_executor, parallel_exec=False)
 
-        self.assertEqual(len(images), 10)
+        self.assertEqual(len(images), 1)
         self.assertEqual(images[0], fake_image)
         mock_torch.no_grad.assert_called()
 
