@@ -71,9 +71,13 @@ class TestSetupPipeline(unittest.TestCase):
         )
         mock_feature_extractor.assert_called_once_with(config)
         mock_scheduler_from_config.assert_called_once()
-        mock_pipeline.load_lora_weights.assert_any_call('lora1.safetensors')
-        mock_pipeline.load_lora_weights.assert_any_call('lora2.safetensors')
-        mock_pipeline.fuse_lora.assert_called()
+
+        # Check if LoRA weights were loaded and fused correctly
+        self.assertEqual(mock_pipeline.load_lora_weights.call_count, 2)
+        mock_pipeline.load_lora_weights.assert_any_call('lora1.safetensors', weight_name='lora1.safetensors', adapter_name='lora1safetensors')
+        mock_pipeline.load_lora_weights.assert_any_call('lora2.safetensors', weight_name='lora2.safetensors', adapter_name='lora2safetensors')
+        mock_pipeline.set_adapters.assert_called_once_with(['lora1safetensors', 'lora2safetensors'], [1.0, 1.0])
+        mock_pipeline.fuse_lora.assert_called_once()
 
 if __name__ == '__main__':
     unittest.main()

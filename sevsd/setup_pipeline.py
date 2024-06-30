@@ -50,10 +50,22 @@ def setup_pipeline(pretrained_model_link_or_path, loras, **kwargs):
     
     if loras:
         pipeline.scheduler = EulerAncestralDiscreteScheduler.from_config(pipeline.scheduler.config)
+        pipeline.unfuse_lora()
+        
+        set_loras = []
+        set_weights = []
         for lora in loras:
-            if lora.endswith(".safetensors"):
-                pipeline.load_lora_weights(lora)
-                pipeline.fuse_lora()
+            adapter_name = lora.replace(".", "")
+            pipeline.load_lora_weights(
+                lora,
+                weight_name=lora,
+                adapter_name=adapter_name
+            )
+            set_loras.append(adapter_name)
+            set_weights.append(1.0)
+
+        pipeline.set_adapters(set_loras, set_weights)
+        pipeline.fuse_lora()
 
     pipeline.to(device)
     pipeline.enable_attention_slicing()
