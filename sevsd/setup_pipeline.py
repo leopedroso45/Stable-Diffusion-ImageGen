@@ -1,5 +1,5 @@
 from sevsd.setup_device import setup_device
-from diffusers import StableDiffusionPipeline, EulerAncestralDiscreteScheduler
+from diffusers import StableDiffusionPipeline, DPMSolverSDEScheduler
 from transformers import AutoFeatureExtractor
 import os
 
@@ -51,7 +51,11 @@ def setup_pipeline(pretrained_model_link_or_path, loras, positive_embeddings=Non
             **default_kwargs
         )
     
-    pipeline.scheduler = EulerAncestralDiscreteScheduler.from_config(pipeline.scheduler.config)
+    pipeline.scheduler = DPMSolverSDEScheduler.from_config(
+        pipeline.scheduler.config, 
+        algorithm_type="karras",
+        use_advanced_sde=True
+    )
 
     if loras:
         pipeline.unfuse_lora()

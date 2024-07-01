@@ -1,8 +1,6 @@
-import torch
-import os
 from sevsd.setup_pipeline import setup_pipeline
 from sevsd.process_task import process_task
-from sevsd.load_embeddings import load_embeddings_from_folder  # Assuming load_embeddings_from_folder is saved here
+from sevsd.load_embeddings import load_embeddings_from_folder
 
 def load_all_embeddings(folders):
     embeddings = []

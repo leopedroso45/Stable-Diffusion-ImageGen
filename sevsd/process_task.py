@@ -39,7 +39,7 @@ def process_task(job, pipeline, executor, path, parallel_exec=True):
     """
     
     def call_generate_image():
-        images = generate_image(job, pipeline, executor, parallel_exec)
+        images = generate_image(job, pipeline, executor, 2, parallel_exec)
         if images is not None:
             for image in images:
                 timestamp = datetime.now().strftime("%Y%m%d_%H%M%S%f")
