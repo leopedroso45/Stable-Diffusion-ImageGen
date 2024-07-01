@@ -4,3 +4,5 @@ omegaconf
 transformers
 peft
 setuptools
+torchsde
+git+https://github.com/sberbank-ai/Real-ESRGAN.git
